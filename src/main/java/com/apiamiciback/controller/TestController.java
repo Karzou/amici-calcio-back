@@ -4,6 +4,7 @@ package com.apiamiciback.controller;
 import com.apiamiciback.model.User;
 import com.apiamiciback.service.RoleService;
 import com.apiamiciback.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,10 @@ public class TestController {
         //log.info("Test user : {}, {}", user.get().getIdUser(), user.get().getRole().getDescription());
         //String message = userService.test();
         return "Test Ok !" ;
+    }
+
+    @GetMapping ("/permis")
+    public String testPermis () {
+        return "Test permis Ok ";
     }
 }

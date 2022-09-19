@@ -33,17 +33,7 @@ public class UserService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
 
 
-    public String test() {
 
-        User user = new User();
-        user.setFirstName("John");
-        user.setLastName("Doe");
-
-
-        userRepository.save(user);
-        log.error("Test : " + user.getFirstName());
-        return "OK "+ user.getLastName() + " est créé.";
-    }
 
     public void saveRoleToUser (Role role, User user) {
 
