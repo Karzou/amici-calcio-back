@@ -8,12 +8,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
+import java.util.logging.SimpleFormatter;
 
 @RestController
 @RequestMapping("/api/test")
@@ -34,11 +39,17 @@ public class TestController {
 
 
         User user = new User();
-        user.setEmail("Test");
+        user.setEmail("Date");
         user.setPassword("1234");
-        user.setLastName("Admin");
+        user.setLastName("Date");
         user.setFirstName("Test");
-        user.setRole(roleService.getRole(1));
+        String date = "1984-10-31";
+        try {
+            user.setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        user.setRole(roleService.getRole(3));
         try{
             userService.saveUser(user);
             log.info("User créé en database {}", user.getEmail());
@@ -52,6 +63,9 @@ public class TestController {
 
     @GetMapping ("/permis")
     public String testPermis () {
-        return "Test permis Ok ";
+
+        // recuperer l username connecté !!!!
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return "Test permis Ok " + username;
     }
 }

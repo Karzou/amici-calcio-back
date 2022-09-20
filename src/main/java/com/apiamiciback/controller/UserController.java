@@ -1,5 +1,6 @@
 package com.apiamiciback.controller;
 
+import com.apiamiciback.dto.RegisterUserDto;
 import com.apiamiciback.model.User;
 import com.apiamiciback.service.RoleService;
 import com.apiamiciback.service.UserService;
@@ -10,18 +11,20 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.ServerRequestExtensionsKt;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -84,5 +87,15 @@ public class UserController {
             throw new RuntimeException("Refresh token is missing");
 
         }
+    }
+
+    @PostMapping("/saveuser")
+    public ResponseEntity<User>saveUser(@RequestBody User user){
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveuser").toUriString());
+        return ResponseEntity.created(uri).body(userService.saveUser(user));
+    }
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<User>>getAllUsers(){
+        return ResponseEntity.ok().body(userService.getAllUsers()) ;
     }
 }
