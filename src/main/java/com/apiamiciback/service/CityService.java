@@ -6,11 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * The type City service.
+ */
 @Service
 @Transactional
 @Slf4j
 public class CityService {
 
+    /**
+     * The City repository.
+     */
     @Autowired
     CityRepository cityRepository;
 }

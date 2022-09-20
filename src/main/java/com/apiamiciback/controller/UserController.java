@@ -33,17 +33,33 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * The type User controller.
+ */
 @RestController
 @Slf4j
 @RequestMapping("/user")
 public class UserController {
 
+    /**
+     * The Role service.
+     */
     @Autowired
     RoleService roleService;
 
+    /**
+     * The User service.
+     */
     @Autowired
     UserService userService;
 
+    /**
+     * Refresh token.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException the io exception
+     */
     @GetMapping ("/refreshtoken")
     public void refreshToken (HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -89,11 +105,23 @@ public class UserController {
         }
     }
 
+    /**
+     * Save user response entity.
+     *
+     * @param user the user
+     * @return the response entity
+     */
     @PostMapping("/saveuser")
     public ResponseEntity<User>saveUser(@RequestBody User user){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveuser").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
+
+    /**
+     * Get all users response entity.
+     *
+     * @return the response entity
+     */
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>>getAllUsers(){
         return ResponseEntity.ok().body(userService.getAllUsers()) ;

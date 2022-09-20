@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * The type Role.
+ */
 @Entity
 @Table(name = "roles")
 @AllArgsConstructor

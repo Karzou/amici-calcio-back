@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * The type User.
+ */
 @Entity
 @Table(name = "users")
 @AllArgsConstructor

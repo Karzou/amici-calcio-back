@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * The type Test controller.
+ */
 @RestController
 @RequestMapping("/api/test")
 @Slf4j
@@ -30,9 +33,17 @@ public class TestController {
 
     final private UserService userService;
 
+    /**
+     * The Role service.
+     */
     @Autowired
     RoleService roleService;
 
+    /**
+     * Test string.
+     *
+     * @return the string
+     */
     @GetMapping("/")
     public String test(){
         log.info("Passage dans test get ");
@@ -61,6 +72,11 @@ public class TestController {
         return "Test Ok !" ;
     }
 
+    /**
+     * Test permis string.
+     *
+     * @return the string
+     */
     @GetMapping ("/permis")
     public String testPermis () {
 

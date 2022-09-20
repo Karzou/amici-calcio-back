@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * The type New.
+ */
 @Entity
 @Table(name = "news")
 @AllArgsConstructor

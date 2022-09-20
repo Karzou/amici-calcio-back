@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * The type Team.
+ */
 @Entity
 @Table(name = "teams")
 @AllArgsConstructor

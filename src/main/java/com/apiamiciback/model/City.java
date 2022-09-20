@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * The type City.
+ */
 @Entity
 @Table(name = "cities")
 @AllArgsConstructor

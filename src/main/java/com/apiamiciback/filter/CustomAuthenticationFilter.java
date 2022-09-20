@@ -25,11 +25,19 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * The type Custom authentication filter.
+ */
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
+    /**
+     * Instantiates a new Custom authentication filter.
+     *
+     * @param authenticationManager the authentication manager
+     */
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
 
         this.authenticationManager = authenticationManager;

@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * The type Team user.
+ */
 @Entity
 @Table(name = "team_user")
 @AllArgsConstructor

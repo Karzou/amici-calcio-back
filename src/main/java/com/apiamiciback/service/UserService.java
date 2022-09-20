@@ -18,23 +18,39 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * The type User service.
+ */
 @Service
 @Transactional
 @Slf4j
 public class UserService implements UserDetailsService {
 
+    /**
+     * The User repository.
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * The Role repository.
+     */
     @Autowired
     RoleRepository roleRepository;
 
+    /**
+     * The Password encoder.
+     */
     @Autowired
     PasswordEncoder passwordEncoder;
 
 
-
-
+    /**
+     * Save role to user.
+     *
+     * @param role the role
+     * @param user the user
+     */
     public void saveRoleToUser (Role role, User user) {
 
     }
@@ -63,6 +79,12 @@ public class UserService implements UserDetailsService {
 
     }
 
+    /**
+     * Save user user.
+     *
+     * @param user the user
+     * @return the user
+     */
     public User saveUser (User user) {
 
         log.info("Saving new user {} in database ", user.getFirstName());
@@ -70,12 +92,24 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    /**
+     * Save role role.
+     *
+     * @param role the role
+     * @return the role
+     */
     public Role saveRole (Role role) {
 
         log.info("Saving new role {} in database ", role.getDescription());
         return roleRepository.save(role);
     }
 
+    /**
+     * Gets user.
+     *
+     * @param username the username
+     * @return the user
+     */
     public User getUser (String username) {
 
         log.info("Searching username {} in database ", username);
@@ -87,6 +121,11 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    /**
+     * Gets all users.
+     *
+     * @return the all users
+     */
     public List<User> getAllUsers () {
 
         log.info("Searching all users in database");

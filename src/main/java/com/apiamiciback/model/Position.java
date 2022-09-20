@@ -9,6 +9,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 
+/**
+ * The type Position.
+ */
 @Entity
 @Table(name = "positions")
 @AllArgsConstructor
