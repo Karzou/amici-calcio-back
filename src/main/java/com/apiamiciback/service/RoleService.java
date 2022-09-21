@@ -28,6 +28,7 @@ public class RoleService {
      * @return the role
      */
     public Role getRole(int id){
+        log.info("Get id role {} in database.", id);
         Optional<Role> role = roleRepository.findById(id);
         return role.get();
     }

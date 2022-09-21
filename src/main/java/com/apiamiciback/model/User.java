@@ -1,11 +1,13 @@
 package com.apiamiciback.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.*;
 
 /**
@@ -24,15 +26,25 @@ public class User {
     @Column(name="id_user")
     private int idUser;
 
+    @NotBlank
+    @Max(value = 100, message = "first_name max 100 characters")
     @Column(name="first_name")
     private String firstName;
 
+    @NotBlank(message = "Must have min 1 character")
+    @Max(value = 100, message = "last_name max 100 characters")
     @Column (name="last_name")
     private String lastName;
 
+    @Email(message = "Must be a Email pattern.")
+    @NotBlank
+    @Max(value = 255, message = "Email max 255 characters")
     @Column (name = "email")
     private String email;
 
+    @JsonIgnore
+    @NotBlank(message = "Must have min 1 character")
+    @Min(value = 4, message = "Password minimum 4 characters")
     @Column (name = "password")
     private String password;
 
@@ -43,6 +55,7 @@ public class User {
     @Column(name = "description")
     private String description;
 
+    @Max(value = 12, message = "Phone : Max 12 characters")
     @Column(name = "phone")
     private String phone;
 
@@ -58,7 +71,7 @@ public class User {
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date createdAt = new Date(System.currentTimeMillis());
 
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
@@ -74,7 +87,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<TeamUser> teamUsersByIdUser = new ArrayList<>();
-
 }
 
 

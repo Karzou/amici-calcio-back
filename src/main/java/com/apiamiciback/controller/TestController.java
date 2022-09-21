@@ -1,24 +1,19 @@
 package com.apiamiciback.controller;
 
 
+import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.model.User;
 import com.apiamiciback.service.RoleService;
 import com.apiamiciback.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Optional;
-import java.util.logging.SimpleFormatter;
 
 /**
  * The type Test controller.
@@ -62,7 +57,7 @@ public class TestController {
         }
         user.setRole(roleService.getRole(3));
         try{
-            userService.saveUser(user);
+//            userService.saveUser(user);
             log.info("User créé en database {}", user.getEmail());
         }catch(Exception e){
             log.error("Erreur lors de l intégration en db de {}", user.getEmail());
@@ -84,4 +79,18 @@ public class TestController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return "Test permis Ok " + username;
     }
+
+    @PostMapping(value = "/validator", consumes = {"application/json"})
+    public String testValidator(@RequestBody @Valid UserRequestDto user)  {
+
+
+
+        userService.saveUser(user);
+
+
+        return "Test validator OK !! " + user.getEmail();
+
+    }
+
+
 }

@@ -1,10 +1,13 @@
 package com.apiamiciback.service;
 
+import com.apiamiciback.model.Position;
 import com.apiamiciback.repository.PositionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * The type Position service.
@@ -19,4 +22,9 @@ public class PositionService {
      */
     @Autowired
     PositionRepository positionRepository;
+
+    /*public Position getPositionById(int id){
+        Position position = positionRepository.findById(id);
+        return position;
+    }*/
 }

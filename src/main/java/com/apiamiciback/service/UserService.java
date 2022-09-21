@@ -1,5 +1,6 @@
 package com.apiamiciback.service;
 
+import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.model.Role;
 import com.apiamiciback.model.User;
 import com.apiamiciback.repository.RoleRepository;
@@ -31,6 +32,9 @@ public class UserService implements UserDetailsService {
      */
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PositionService positionService;
 
     /**
      * The Role repository.
@@ -85,11 +89,43 @@ public class UserService implements UserDetailsService {
      * @param user the user
      * @return the user
      */
-    public User saveUser (User user) {
+    public User saveUser (UserRequestDto user) {
 
         log.info("Saving new user {} in database ", user.getFirstName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        if(userRepository.findByEmail(user.getEmail()) != null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            User userDB = new User();
+            userDB.setPassword(user.getPassword());
+            userDB.setLastName(user.getLastName());
+            userDB.setEmail(user.getEmail());
+            userDB.setFirstName(user.getFirstName());
+            if(user.getBirthdate() != null){
+                userDB.setBirthdate(user.getBirthdate());
+            }
+            if(user.getDescription() != null){
+                userDB.setDescription(user.getDescription());
+            }
+            if(user.getPhone() != null){
+                userDB.setPhone(user.getPhone());
+            }
+           /* (user.getPosition() != null){
+
+
+                userDB.getPosition().setPosition();
+            }*/
+            if(user.getStreet() != null){
+                userDB.setStreet(user.getStreet());
+            }
+            if(user.getNumber() != null){
+                userDB.setNumber(user.getNumber());
+            }
+
+            return userRepository.save(userDB);
+        }else {
+            log.error("User {} already exist in database.", user.getEmail());
+            return null;
+        }
     }
 
     /**
@@ -115,8 +151,6 @@ public class UserService implements UserDetailsService {
         log.info("Searching username {} in database ", username);
 
         User user = userRepository.findByEmail(username);
-
-        log.info("Test password ||| " + user.getPassword());
 
         return user;
     }

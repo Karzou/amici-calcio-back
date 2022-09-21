@@ -6,29 +6,37 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
 
 /**
- * The type Team.
+ * The type New.
  */
 @Entity
-@Table(name = "teams")
+@Table(name = "news")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Team {
+public class News {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id_team")
+    @Column(name= "id_new")
     private int id;
 
-    @Column(name = "is_default_team")
-    private Boolean isDefaultTeam;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "team_name")
-    private String teamName;
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "display_begin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date begin;
+
+    @Column(name = "display_end")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date end;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,6 +46,8 @@ public class Team {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
 
-    @OneToMany(mappedBy = "team")
-    private List<TeamUser> teamUsersByIdTeam = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn (name = "creator_id")
+    private User creator;
+
 }

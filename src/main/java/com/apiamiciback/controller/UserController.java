@@ -1,6 +1,6 @@
 package com.apiamiciback.controller;
 
-import com.apiamiciback.dto.RegisterUserDto;
+import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.model.User;
 import com.apiamiciback.service.RoleService;
 import com.apiamiciback.service.UserService;
@@ -12,12 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.ServerRequestExtensionsKt;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -112,9 +109,19 @@ public class UserController {
      * @return the response entity
      */
     @PostMapping("/saveuser")
-    public ResponseEntity<User>saveUser(@RequestBody User user){
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveuser").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+    public ResponseEntity<?>saveUser(@RequestBody UserRequestDto user){
+        log.info("Call saveUser POST : {}", user.getEmail());
+        if (userService.getUser(user.getEmail()) != null){
+            log.error("User {} already exist.", user.getEmail());
+
+            return ResponseEntity.badRequest().body("User already exist");
+        } else {
+            log.info("User {} saved successfully.", user.getEmail());
+
+
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveuser").toUriString());
+            return ResponseEntity.created(uri).body(userService.saveUser(user));
+        }
     }
 
     /**
@@ -124,6 +131,9 @@ public class UserController {
      */
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>>getAllUsers(){
-        return ResponseEntity.ok().body(userService.getAllUsers()) ;
+        log.info("Call get all users.");
+        List<User>users = userService.getAllUsers();
+        log.info(" {} users will be send to front.", users.size());
+        return ResponseEntity.ok().body(users) ;
     }
 }

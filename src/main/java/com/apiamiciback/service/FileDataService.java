@@ -36,6 +36,7 @@ public class FileDataService {
      */
     public String uploadImageToFileSystem (MultipartFile file) throws IOException{
         String filePath = FOLDER_PATH + file.getOriginalFilename();
+        log.info("Start file upload : {}", filePath);
         FileData fileData = fileDataRepository.save(FileData.builder()
                         .name(file.getName())
                         .type(file.getContentType())
@@ -45,6 +46,7 @@ public class FileDataService {
         file.transferTo(new File(filePath));
 
         if(fileData != null) {
+            log.info("File uploaded successfully : {}", file.getOriginalFilename());
             return "File uploaded successfully " + file.getOriginalFilename();
         }
         return null;

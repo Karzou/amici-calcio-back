@@ -1,10 +1,11 @@
 package com.apiamiciback.repository;
 
-import com.apiamiciback.model.New;
+import com.apiamiciback.model.News;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * The interface New repository.
  */
-public interface NewRepository extends JpaRepository<New, Integer> {
+public interface NewRepository extends JpaRepository<News, Integer> {
+
 }
