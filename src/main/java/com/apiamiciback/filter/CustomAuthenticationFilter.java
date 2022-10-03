@@ -1,6 +1,5 @@
 package com.apiamiciback.filter;
 
-import ch.qos.logback.core.net.ObjectWriter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,8 +44,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+
+        log.info("Params : " + request.getParameter("username"));
+        String username = request.getParameter("username").trim();
+        String password = request.getParameter("password").trim();
         log.info("Username is {} ", username);
         log.info("Password is {} ", password);
 
@@ -61,7 +62,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         log.info("In successfullAuth   ");
         User user = (User)authentication.getPrincipal();
 
-        log.info("Test user : {}", user.getUsername());
+        log.info("Test user : {}", user.getAuthorities().toArray());
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
@@ -76,13 +77,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         log.info("Refresh_token : {}", refresh_token);
-        // response.setHeader("access_token", access_token);
-        // response.setHeader("refresh_token", refresh_token);
+        response.setHeader("access_token", access_token);
+        response.setHeader("refresh_token", refresh_token);
+        response.setHeader("role", user.getAuthorities().toString());
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
+        tokens.put("role", user.getAuthorities().toString());
         response.setContentType(APPLICATION_JSON_VALUE);
+        //Obliger sinon le front rejette la réponse !!!
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }

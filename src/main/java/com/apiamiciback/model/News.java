@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import java.util.Date;
 
 /**
@@ -24,9 +26,11 @@ public class News {
     @Column(name= "id_new")
     private int id;
 
+    @NotBlank(message = "Not Blank")
     @Column(name = "title")
     private String title;
 
+    @NotBlank(message = "Not Blank")
     @Column(name = "text")
     private String text;
 

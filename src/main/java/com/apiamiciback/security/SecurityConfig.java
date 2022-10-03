@@ -4,7 +4,6 @@ import com.apiamiciback.filter.CustomAuthenticationFilter;
 import com.apiamiciback.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,10 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+      //  http.cors().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/login/**", "/user/refreshtoken/**", "/api/test/**").permitAll();
-        http.authorizeRequests().antMatchers("/api/test/permis/**").hasAnyAuthority("ROLE_ADMIN");
-        //http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers("/login/**", "/user/refreshtoken/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/user/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -52,4 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 }

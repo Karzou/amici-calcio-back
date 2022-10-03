@@ -83,14 +83,9 @@ public class TestController {
     @PostMapping(value = "/validator", consumes = {"application/json"})
     public String testValidator(@RequestBody @Valid UserRequestDto user)  {
 
-
-
         userService.saveUser(user);
-
 
         return "Test validator OK !! " + user.getEmail();
 
     }
-
-
 }

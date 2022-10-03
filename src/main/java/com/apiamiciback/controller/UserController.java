@@ -108,7 +108,7 @@ public class UserController {
      * @param user the user
      * @return the response entity
      */
-    @PostMapping("/saveuser")
+    @PostMapping(value = "/saveuser", consumes = {"application/json"})
     public ResponseEntity<?>saveUser(@RequestBody UserRequestDto user){
         log.info("Call saveUser POST : {}", user.getEmail());
         if (userService.getUser(user.getEmail()) != null){
@@ -117,8 +117,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("User already exist");
         } else {
             log.info("User {} saved successfully.", user.getEmail());
-
-
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveuser").toUriString());
             return ResponseEntity.created(uri).body(userService.saveUser(user));
         }
@@ -135,5 +133,16 @@ public class UserController {
         List<User>users = userService.getAllUsers();
         log.info(" {} users will be send to front.", users.size());
         return ResponseEntity.ok().body(users) ;
+    }
+
+    @GetMapping("getUser/{username}")
+    public ResponseEntity<User> getUser(@RequestBody String username){
+        return ResponseEntity.ok().body(userService.getUser(username));
+    }
+
+    @PutMapping(value = "update/{id}", consumes = {"application/json"})
+    public ResponseEntity<User> uodateUser(@RequestBody UserRequestDto user, @PathVariable int id){
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/update").toUriString());
+        return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 }

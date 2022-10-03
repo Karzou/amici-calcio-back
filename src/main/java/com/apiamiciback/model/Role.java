@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Role.
@@ -26,4 +28,7 @@ public class Role {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany
+    public List<User> userList = new ArrayList<>();
 }

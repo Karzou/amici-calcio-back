@@ -1,6 +1,7 @@
 package com.apiamiciback.service;
 
 import com.apiamiciback.dto.UserRequestDto;
+import com.apiamiciback.exception.NotFoundException;
 import com.apiamiciback.model.Role;
 import com.apiamiciback.model.User;
 import com.apiamiciback.repository.RoleRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
@@ -120,12 +122,13 @@ public class UserService implements UserDetailsService {
             if(user.getNumber() != null){
                 userDB.setNumber(user.getNumber());
             }
-
+            log.info("User {} saved in database.", userDB.getEmail());
             return userRepository.save(userDB);
         }else {
             log.error("User {} already exist in database.", user.getEmail());
             return null;
         }
+
     }
 
     /**
@@ -165,5 +168,24 @@ public class UserService implements UserDetailsService {
         log.info("Searching all users in database");
 
         return userRepository.findAll();
+    }
+
+    public User updateUser (int id, UserRequestDto userRequestDto){
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User Not found in database : " + id + " " + userRequestDto.getEmail()));
+
+        user.setLastName(userRequestDto.getLastName());
+        user.setFirstName(user.getFirstName());
+        user.setNumber(userRequestDto.getNumber());
+        user.setStreet(userRequestDto.getStreet());
+        user.setPhone(userRequestDto.getPhone());
+        user.setDescription(user.getDescription());
+        user.setBirthdate(user.getBirthdate());
+        user.setLastUpdate(new Date(System.currentTimeMillis()));
+
+        log.info("User : [} updated in databas", user.getEmail());
+
+        return userRepository.save(user);
     }
 }
