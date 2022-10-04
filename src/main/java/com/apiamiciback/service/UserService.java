@@ -157,7 +157,16 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
+    public User getUserById (int id) {
 
+        log.info("Searching username {} in database ", id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User Not found in database : " + id ));
+
+
+        return user;
+    }
     /**
      * Gets all users.
      *

@@ -136,9 +136,10 @@ public class UserController {
         return ResponseEntity.ok().body(users) ;
     }
 
-    @GetMapping("getUser/{username}")
-    public ResponseEntity<User> getUser(@RequestBody String username){
-        return ResponseEntity.ok().body(userService.getUser(username));
+    @GetMapping("/getUser")
+    public ResponseEntity<User> getUser(@RequestParam("id") int id){
+        log.info("GetUser : " + id);
+        return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
     @PutMapping(value = "update/{id}", consumes = {"application/json"})
