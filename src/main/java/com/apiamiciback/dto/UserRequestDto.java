@@ -24,27 +24,27 @@ public class UserRequestDto {
     private int idUser;
 
     @NotBlank
-    @Max(value = 100, message = "first_name max 100 characters")
+    @Size(max = 100, message = "first_name max 100 characters")
     private String firstName;
 
     @NotBlank(message = "Must have min 1 character")
-    @Max(value = 100, message = "last_name max 100 characters")
+    @Size(max = 100, message = "last_name max 100 characters")
     private String lastName;
 
     @Email(message = "Must be a Email pattern.")
     @NotBlank
-    @Max(value = 255, message = "Email max 255 characters")
+    @Size(max = 255, message = "Email max 255 characters")
     private String email;
 
     @NotBlank(message = "Must have min 1 character")
-    @Min(value = 4, message = "Password minimum 4 characters")
+    @Size(min = 4, message = "Password minimum 4 characters")
     private String password;
 
     private Role role;
 
     private String description;
 
-    @Max(value = 12, message = "Phone : Max 12 characters")
+    @Size(max = 12, message = "Phone : Max 12 characters")
     private String phone;
 
     @Past(message = "Must be a date in Past")

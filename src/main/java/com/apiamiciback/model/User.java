@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.*;
 
 /**
@@ -19,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class User {
 
     @Id
@@ -27,24 +25,24 @@ public class User {
     private int idUser;
 
     @NotBlank
-    @Max(value = 100, message = "first_name max 100 characters")
+    @Size(max = 100, message = "first_name max 100 characters")
     @Column(name="first_name")
     private String firstName;
 
     @NotBlank(message = "Must have min 1 character")
-    @Max(value = 100, message = "last_name max 100 characters")
+    @Size(max = 100, message = "last_name max 100 characters")
     @Column (name="last_name")
     private String lastName;
 
     @Email(message = "Must be a Email pattern.")
     @NotBlank
-    @Max(value = 255, message = "Email max 255 characters")
+    @Size(max = 255, message = "Email max 255 characters")
     @Column (name = "email")
     private String email;
 
     @JsonIgnore
     @NotBlank(message = "Must have min 1 character")
-    @Min(value = 4, message = "Password minimum 4 characters")
+    @Size(min = 4, message = "Password minimum 4 characters")
     @Column (name = "password")
     private String password;
 
@@ -55,7 +53,7 @@ public class User {
     @Column(name = "description")
     private String description;
 
-    @Max(value = 12, message = "Phone : Max 12 characters")
+    @Size(max = 12, message = "Phone : Max 12 characters")
     @Column(name = "phone")
     private String phone;
 

@@ -53,5 +53,4 @@ public class News {
     @ManyToOne
     @JoinColumn (name = "creator_id")
     private User creator;
-
 }

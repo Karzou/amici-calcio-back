@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import java.io.IOException;
 import java.net.URI;
@@ -109,8 +110,8 @@ public class UserController {
      * @return the response entity
      */
     @PostMapping(value = "/saveuser", consumes = {"application/json"})
-    public ResponseEntity<?>saveUser(@RequestBody UserRequestDto user){
-        log.info("Call saveUser POST : {}", user.getEmail());
+    public ResponseEntity<?>saveUser(@RequestBody @Valid UserRequestDto user){
+        log.info("Call saveUser POST : {}", user.getEmail() + ' ' + user.getFirstName() + ' ' + user.getLastName());
         if (userService.getUser(user.getEmail()) != null){
             log.error("User {} already exist.", user.getEmail());
 

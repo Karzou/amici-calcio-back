@@ -94,7 +94,7 @@ public class UserService implements UserDetailsService {
     public User saveUser (UserRequestDto user) {
 
         log.info("Saving new user {} in database ", user.getFirstName());
-        if(userRepository.findByEmail(user.getEmail()) != null){
+        if(userRepository.findByEmail(user.getEmail()) == null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             User userDB = new User();
