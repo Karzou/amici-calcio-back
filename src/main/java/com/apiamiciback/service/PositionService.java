@@ -27,4 +27,10 @@ public class PositionService {
         Position position = positionRepository.findById(id);
         return position;
     }*/
+
+    public Position getPositionByIf(int id) {
+        Position position = positionRepository.findById(2).orElseThrow();
+
+        return position;
+    }
 }

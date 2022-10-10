@@ -136,15 +136,23 @@ public class UserController {
         return ResponseEntity.ok().body(users) ;
     }
 
-    @GetMapping("/getUser")
-    public ResponseEntity<User> getUser(@RequestParam("id") int id){
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") int id){
         log.info("GetUser : " + id);
         return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
     @PutMapping(value = "update/{id}", consumes = {"application/json"})
-    public ResponseEntity<User> uodateUser(@RequestBody UserRequestDto user, @PathVariable int id){
+    public ResponseEntity<?> updateUser(@PathVariable("id") int id ,@RequestBody @Valid UserRequestDto user){
+        log.info("update user : " + user.toString());
+
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/update").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        return ResponseEntity.created(uri).body(userService.updateUser(id, user));
+
+    }
+    @GetMapping("/deleteUser")
+    public ResponseEntity<?>deleteBoolUser (int id){
+
+        return ResponseEntity.ok().body("OK");
     }
 }

@@ -85,6 +85,11 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<TeamUser> teamUsersByIdUser = new ArrayList<>();
+
+
+    public void setPosition(Position position){
+        this.position = position;
+    }
 }
 
 

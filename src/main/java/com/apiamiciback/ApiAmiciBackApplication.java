@@ -1,5 +1,6 @@
 package com.apiamiciback;
 
+import com.apiamiciback.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 
 
@@ -34,9 +36,13 @@ public class ApiAmiciBackApplication implements CommandLineRunner {
         SpringApplication.run(ApiAmiciBackApplication.class, args);
     }
 
+    @Resource
+    FileStorageService storageService;
+
     @Override
     public void run(String... args) throws Exception {
-
+        //storageService.deleteAll();
+        //storageService.init();
         log.info("API READY !!!!!!");
 
     }

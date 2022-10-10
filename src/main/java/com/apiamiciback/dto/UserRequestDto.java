@@ -1,16 +1,12 @@
 package com.apiamiciback.dto;
 
 
-import com.apiamiciback.model.City;
-import com.apiamiciback.model.Position;
 import com.apiamiciback.model.Role;
 import com.apiamiciback.model.TeamUser;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,5 +1,6 @@
 package com.apiamiciback.service;
 
+import com.apiamiciback.dto.NewsRequestDto;
 import com.apiamiciback.exception.NotFoundException;
 import com.apiamiciback.model.News;
 import com.apiamiciback.repository.NewRepository;
@@ -36,13 +37,21 @@ public class NewService {
         return newRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("New not found in DataBase : " + id));
     }
-    public News saveNews(News news){
-        log.info("Saving news {} in database", news.getTitle());
+    public News saveNews(NewsRequestDto newsRequestDto){
+        log.info("Saving news {} in database", newsRequestDto.getTitle());
+
+        News news = News.builder()
+                .title(newsRequestDto.getTitle())
+                .text(newsRequestDto.getContent())
+                .createdAt(newsRequestDto.getCreatedAt())
+                .imgUrl(newsRequestDto.getUrl())
+                .build();
+
         return newRepository.save(news);
     }
 
     public News updateNews(News newsRequest, int id){
-        log.info("Call update news service for : {}", newsRequest.getTitle());
+        log.info("Call update news service for : {}", newsRequest.getTitle() + " ");
         News news = newRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("New not found in DataBase : " + id + newsRequest.getTitle()));
 

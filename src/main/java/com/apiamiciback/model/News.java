@@ -1,9 +1,6 @@
 package com.apiamiciback.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class News {
 
     @Id
@@ -33,6 +31,9 @@ public class News {
     @NotBlank(message = "Not Blank")
     @Column(name = "text")
     private String text;
+
+    @Column(name = "new_img_url")
+    private String imgUrl;
 
     @Column(name = "display_begin")
     @Temporal(TemporalType.TIMESTAMP)

@@ -2,8 +2,10 @@ package com.apiamiciback.service;
 
 import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.exception.NotFoundException;
+import com.apiamiciback.model.Position;
 import com.apiamiciback.model.Role;
 import com.apiamiciback.model.User;
+import com.apiamiciback.repository.PositionRepository;
 import com.apiamiciback.repository.RoleRepository;
 import com.apiamiciback.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,9 @@ public class UserService implements UserDetailsService {
      */
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    PositionRepository positionRepository;
 
     /**
      * The Password encoder.
@@ -116,6 +121,9 @@ public class UserService implements UserDetailsService {
 
                 userDB.getPosition().setPosition();
             }*/
+            userDB.setPosition(positionService.getPositionByIf(2));
+            userDB.setRole(roleRepository.findById(3).orElseThrow());
+
             if(user.getStreet() != null){
                 userDB.setStreet(user.getStreet());
             }
@@ -185,15 +193,15 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new NotFoundException("User Not found in database : " + id + " " + userRequestDto.getEmail()));
 
         user.setLastName(userRequestDto.getLastName());
-        user.setFirstName(user.getFirstName());
+        user.setFirstName(userRequestDto.getFirstName());
         user.setNumber(userRequestDto.getNumber());
         user.setStreet(userRequestDto.getStreet());
         user.setPhone(userRequestDto.getPhone());
-        user.setDescription(user.getDescription());
-        user.setBirthdate(user.getBirthdate());
+        user.setDescription(userRequestDto.getDescription());
+        user.setBirthdate(userRequestDto.getBirthdate());
         user.setLastUpdate(new Date(System.currentTimeMillis()));
 
-        log.info("User : [} updated in databas", user.getEmail());
+        log.info("User : {} updated in database", user.getEmail());
 
         return userRepository.save(user);
     }
