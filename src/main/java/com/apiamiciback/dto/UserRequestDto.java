@@ -4,6 +4,7 @@ package com.apiamiciback.dto;
 import com.apiamiciback.model.Role;
 import com.apiamiciback.model.TeamUser;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserRequestDto {
 
     private int idUser;
@@ -36,7 +38,7 @@ public class UserRequestDto {
     @Size(min = 4, message = "Password minimum 4 characters")
     private String password;
 
-    private Role role;
+    private String role;
 
     private String description;
 
@@ -50,9 +52,9 @@ public class UserRequestDto {
 
     private String number;
 
-    private int position;
+    private int codePostal;
 
-    private int city;
+    private String position;
 
     private List<TeamUser> teamUsersByIdUser = new ArrayList<>();
 }

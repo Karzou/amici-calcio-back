@@ -2,6 +2,7 @@ package com.apiamiciback.service;
 
 import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.exception.NotFoundException;
+import com.apiamiciback.model.City;
 import com.apiamiciback.model.Position;
 import com.apiamiciback.model.Role;
 import com.apiamiciback.model.User;
@@ -40,6 +41,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     PositionService positionService;
 
+
     /**
      * The Role repository.
      */
@@ -55,6 +57,8 @@ public class UserService implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    CityService cityService;
 
     /**
      * Save role to user.
@@ -116,12 +120,13 @@ public class UserService implements UserDetailsService {
             if(user.getPhone() != null){
                 userDB.setPhone(user.getPhone());
             }
-           /* (user.getPosition() != null){
-
-
-                userDB.getPosition().setPosition();
-            }*/
-            userDB.setPosition(positionService.getPositionByIf(2));
+            if (user.getPosition() != null) {
+                Position position = positionRepository.findByPosition(user.getPosition());
+                log.info("Position " + position.getPosition());
+                if (position != null) {
+                    userDB.setPosition(position);
+                }
+            }
             userDB.setRole(roleRepository.findById(3).orElseThrow());
 
             if(user.getStreet() != null){
@@ -130,15 +135,20 @@ public class UserService implements UserDetailsService {
             if(user.getNumber() != null){
                 userDB.setNumber(user.getNumber());
             }
+            if(user.getCodePostal() != 0){
+                City city = cityService.getCityByCodePostal(user.getCodePostal());
+                log.info("City : " + city.getCity());
+                if (city != null){
+                    userDB.setCity(city);
+                }
+            }
             log.info("User {} saved in database.", userDB.getEmail());
             return userRepository.save(userDB);
         }else {
             log.error("User {} already exist in database.", user.getEmail());
             return null;
         }
-
     }
-
     /**
      * Save role role.
      *
@@ -198,8 +208,34 @@ public class UserService implements UserDetailsService {
         user.setStreet(userRequestDto.getStreet());
         user.setPhone(userRequestDto.getPhone());
         user.setDescription(userRequestDto.getDescription());
-        user.setBirthdate(userRequestDto.getBirthdate());
         user.setLastUpdate(new Date(System.currentTimeMillis()));
+        if(userRequestDto.getBirthdate() != null){
+            user.setBirthdate(userRequestDto.getBirthdate());
+        }
+        if(userRequestDto.getDescription() != null){
+            user.setDescription(userRequestDto.getDescription());
+        }
+        if(userRequestDto.getPhone() != null){
+            user.setPhone(userRequestDto.getPhone());
+        }
+        if (userRequestDto.getPosition() != null) {
+            Position position = positionRepository.findByPosition(userRequestDto.getPosition());
+            log.info("Position " + position.getPosition());
+            if (position != null) {
+                user.setPosition(position);
+            }else{
+                log.error("{} n existe pas en DB", userRequestDto.getPosition());
+            }
+        }
+        if(userRequestDto.getCodePostal() != 0){
+            City city = cityService.getCityByCodePostal(userRequestDto.getCodePostal());
+            log.info("City : " + city.getCity());
+            if (city != null){
+                user.setCity(city);
+            }else{
+                log.error("{} n'existe pas en DB", userRequestDto.getCodePostal());
+            }
+        }
 
         log.info("User : {} updated in database", user.getEmail());
 

@@ -57,6 +57,9 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "img_url")
+    private String imgUrl;
+
     @Column(name = "birthdate")
     @Temporal(TemporalType.DATE)
     private Date birthdate;
@@ -85,11 +88,18 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<TeamUser> teamUsersByIdUser = new ArrayList<>();
-
-
     public void setPosition(Position position){
         this.position = position;
     }
+
+    public String adresseToString(){
+        return getStreet() + " " + getNumber() + " " + getCity().getCodePostal() + " " + getCity().getCity();
+    }
+
+    public String positionToString(){
+        return getPosition().getPosition();
+    }
+
 }
 
 
