@@ -2,6 +2,7 @@ package com.apiamiciback.controller;
 
 import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.model.User;
+import com.apiamiciback.service.FileStorageService;
 import com.apiamiciback.service.RoleService;
 import com.apiamiciback.service.UserService;
 import com.auth0.jwt.JWT;
@@ -11,10 +12,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +54,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    FileStorageService storageService;
     /**
      * Refresh token.
      *
@@ -148,11 +153,39 @@ public class UserController {
 
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/update").toUriString());
         return ResponseEntity.created(uri).body(userService.updateUser(id, user));
-
     }
-    @GetMapping("/deleteUser")
-    public ResponseEntity<?>deleteBoolUser (int id){
 
-        return ResponseEntity.ok().body("OK");
+    @PostMapping(value = "/saveImg", consumes = {"multipart/form-data"})
+    public ResponseEntity<?>saveImgUser(@RequestParam("id") int idUser, @RequestParam("file") MultipartFile file){
+
+        log.info("Call save image user for : {}.", idUser + " "  + file.getOriginalFilename());
+
+        String message = "";
+        String url = "";
+        try {
+            url = storageService.save(file, file.getOriginalFilename());
+
+            message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            log.info(message + "URL : " + url);
+
+        } catch (Exception e) {
+            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            log.error(message);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+        }
+
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveImg").toUriString());
+        return ResponseEntity.created(uri).body(userService.savImgUser(idUser, url));
     }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public ResponseEntity<?>deleteBoolUser (@PathVariable int id){
+
+        log.info("Delete user {}", id);
+
+        userService.deleteUser(id);
+
+        return ResponseEntity.ok().body( id + " User deleted");
+    }
+
 }

@@ -41,6 +41,12 @@ public class NewsController {
         return ResponseEntity.ok().body(newService.getAllNews());
     }
 
+    @GetMapping("/getLastNews")
+    public ResponseEntity<News>getLastNews()
+    {
+        log.info("Call getLastNews");
+        return ResponseEntity.ok(newService.getLastNew());
+    }
     @GetMapping(value = "/getNews/{id}", consumes = {"application/json"})
     public ResponseEntity<News> getNews(@PathVariable int id){
 
@@ -127,5 +133,15 @@ public class NewsController {
                  }
 
                  return  ResponseEntity.ok().body("/uploads/" + filecode);
+    }
+
+    @DeleteMapping("/deleteNews/{id}")
+    public ResponseEntity<?>deleteBoolNew (@PathVariable int id){
+
+        log.info("Delete news {}", id);
+
+        newService.deleteNews(id);
+
+        return ResponseEntity.ok().body( id + " News deleted");
     }
 }

@@ -3,6 +3,7 @@ package com.apiamiciback.service;
 import com.apiamiciback.dto.NewsRequestDto;
 import com.apiamiciback.exception.NotFoundException;
 import com.apiamiciback.model.News;
+import com.apiamiciback.model.User;
 import com.apiamiciback.repository.NewRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,11 @@ public class NewService {
     public List<News> getAllNews(){
 
         log.info("Get All News in database");
-        return newRepository.findAll();
+        return newRepository.findAllByCreatedDesc();
+    }
+
+    public News getLastNew(){
+        return newRepository.findAllByCreatedDesc().get(0);
     }
 
     public News getNew(int id){
@@ -61,5 +66,14 @@ public class NewService {
 
         log.info("News {} updated in database.", news.getTitle());
         return newRepository.save(news);
+    }
+
+    public void deleteNews(int id){
+        log.info("Service delete news id : {}", id);
+
+        News news = newRepository.findById(id).orElseThrow();
+        log.info("Delete user {}", news.getTitle());
+
+        newRepository.delete(news);
     }
 }

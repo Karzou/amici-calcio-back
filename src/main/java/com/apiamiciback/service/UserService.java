@@ -2,10 +2,8 @@ package com.apiamiciback.service;
 
 import com.apiamiciback.dto.UserRequestDto;
 import com.apiamiciback.exception.NotFoundException;
-import com.apiamiciback.model.City;
-import com.apiamiciback.model.Position;
-import com.apiamiciback.model.Role;
-import com.apiamiciback.model.User;
+import com.apiamiciback.model.*;
+import com.apiamiciback.repository.NewRepository;
 import com.apiamiciback.repository.PositionRepository;
 import com.apiamiciback.repository.RoleRepository;
 import com.apiamiciback.repository.UserRepository;
@@ -59,6 +57,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     CityService cityService;
+
+    @Autowired
+    NewRepository newRepository;
 
     /**
      * Save role to user.
@@ -126,6 +127,9 @@ public class UserService implements UserDetailsService {
                 if (position != null) {
                     userDB.setPosition(position);
                 }
+            }else{
+                Position position = positionRepository.findByPosition("attaquant");
+                userDB.setPosition(position);
             }
             userDB.setRole(roleRepository.findById(3).orElseThrow());
 
@@ -141,6 +145,10 @@ public class UserService implements UserDetailsService {
                 if (city != null){
                     userDB.setCity(city);
                 }
+            }else{
+                City city = cityService.getCityByCodePostal(10000);
+                log.info("City Unknow : ");
+                userDB.setCity(city);
             }
             log.info("User {} saved in database.", userDB.getEmail());
             return userRepository.save(userDB);
@@ -240,5 +248,28 @@ public class UserService implements UserDetailsService {
         log.info("User : {} updated in database", user.getEmail());
 
         return userRepository.save(user);
+    }
+
+    public User savImgUser(int id, String url){
+        User user = userRepository.findById(id).orElseThrow();
+        user.setImgUrl(url);
+       return userRepository.save(user);
+
+    }
+
+    public void deleteUser(int id){
+
+        log.info("Service delete user");
+
+        User user = userRepository.findById(id).orElseThrow();
+        log.info("Delete user {}", user.getEmail());
+        user.setCity(null);
+        user.setPosition(null);
+        user.setRole(null);
+        News news = newRepository.findByCreator(user);
+        if(news != null){
+            news.setCreator(null);
+        }
+        userRepository.delete(user);
     }
 }
