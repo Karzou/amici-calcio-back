@@ -23,6 +23,9 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The type News controller.
+ */
 @RestController
 @RequestMapping("/news")
 @Slf4j
@@ -31,9 +34,17 @@ public class NewsController {
     @Autowired
     private NewService newService;
 
+    /**
+     * The Storage service.
+     */
     @Autowired
     FileStorageService storageService;
 
+    /**
+     * Get all news response entity.
+     *
+     * @return the response entity
+     */
     @GetMapping("/getAllNews")
     public ResponseEntity<List<News>> getAllNews(){
 
@@ -41,18 +52,39 @@ public class NewsController {
         return ResponseEntity.ok().body(newService.getAllNews());
     }
 
+    /**
+     * Get last news response entity.
+     *
+     * @return the response entity
+     */
     @GetMapping("/getLastNews")
     public ResponseEntity<News>getLastNews()
     {
         log.info("Call getLastNews");
         return ResponseEntity.ok(newService.getLastNew());
     }
+
+    /**
+     * Get news response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @GetMapping(value = "/getNews/{id}", consumes = {"application/json"})
     public ResponseEntity<News> getNews(@PathVariable int id){
 
         log.info("Call get news id : ",id);
         return ResponseEntity.ok().body(newService.getNew(id));
     }
+
+    /**
+     * Save news response entity.
+     *
+     * @param title   the title
+     * @param content the content
+     * @param file    the file
+     * @return the response entity
+     */
     @PostMapping(value = "/saveNews", consumes = {"multipart/form-data"})
     public ResponseEntity<?>saveNews(@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("file") MultipartFile file){
         log.info("Call save news for : {}.", title + ' ' + content + " "  + file.getOriginalFilename());
@@ -84,6 +116,13 @@ public class NewsController {
         return ResponseEntity.created(uri).body(newService.saveNews(newsRequestDto));
     }
 
+    /**
+     * Update news response entity.
+     *
+     * @param news the news
+     * @param id   the id
+     * @return the response entity
+     */
     @PutMapping(value = "/updateNews/{id}",consumes = {"application/json"})
     public ResponseEntity<News>updateNews(@RequestBody  @Valid News news, @PathVariable int id){
 
@@ -92,6 +131,12 @@ public class NewsController {
         return ResponseEntity.created(uri).body(newService.updateNews(news, id));
     }
 
+    /**
+     * Gets file.
+     *
+     * @param fileCode the file code
+     * @return the file
+     */
     @GetMapping(value= "/files/{fileCode}")
     @ResponseBody
     public ResponseEntity<?> getFile(@PathVariable("fileCode") String fileCode) {
@@ -117,6 +162,12 @@ public class NewsController {
                 .body(resource);
     }
 
+    /**
+     * Upload file response entity.
+     *
+     * @param multipartFile the multipart file
+     * @return the response entity
+     */
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(
             @RequestParam("file") MultipartFile multipartFile)
@@ -135,6 +186,12 @@ public class NewsController {
                  return  ResponseEntity.ok().body("/uploads/" + filecode);
     }
 
+    /**
+     * Delete bool new response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @DeleteMapping("/deleteNews/{id}")
     public ResponseEntity<?>deleteBoolNew (@PathVariable int id){
 

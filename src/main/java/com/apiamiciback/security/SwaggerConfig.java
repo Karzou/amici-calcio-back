@@ -15,9 +15,17 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Swagger config.
+ */
 @Configuration
 public class SwaggerConfig {
 
+    /**
+     * Custom implementation docket.
+     *
+     * @return the docket
+     */
     @Bean
     public Docket customImplementation() {
 
@@ -35,6 +43,11 @@ public class SwaggerConfig {
                 .genericModelSubstitutes(ResponseEntity.class);
     }
 
+    /**
+     * Api info api info.
+     *
+     * @return the api info
+     */
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Swagger Amici Calcio")

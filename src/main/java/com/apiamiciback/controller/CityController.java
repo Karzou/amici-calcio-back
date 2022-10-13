@@ -10,13 +10,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The type City controller.
+ */
 @RestController
 @RequestMapping("/city")
 public class CityController {
 
+    /**
+     * The City service.
+     */
     @Autowired
     CityService cityService;
 
+    /**
+     * Get all cities response entity.
+     *
+     * @return the response entity
+     */
     @GetMapping("/getAllCities")
     public ResponseEntity<List<City>> getAllCities(){
 

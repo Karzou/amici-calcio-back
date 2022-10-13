@@ -80,6 +80,12 @@ public class TestController {
         return "Test permis Ok " + username;
     }
 
+    /**
+     * Test validator string.
+     *
+     * @param user the user
+     * @return the string
+     */
     @PostMapping(value = "/validator", consumes = {"application/json"})
     public String testValidator(@RequestBody @Valid UserRequestDto user)  {
 

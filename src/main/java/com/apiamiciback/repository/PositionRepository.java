@@ -7,5 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PositionRepository extends JpaRepository<Position, Integer> {
 
+    /**
+     * Find by position position.
+     *
+     * @param position the position
+     * @return the position
+     */
     Position findByPosition(String position);
 }

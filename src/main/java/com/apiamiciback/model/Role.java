@@ -29,6 +29,9 @@ public class Role {
     @Column(name = "description")
     private String description;
 
+    /**
+     * The User list.
+     */
     @OneToMany
     public List<User> userList = new ArrayList<>();
 }

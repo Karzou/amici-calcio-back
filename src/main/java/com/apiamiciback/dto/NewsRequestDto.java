@@ -11,6 +11,9 @@ import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.util.Date;
 
+/**
+ * The type News request dto.
+ */
 @Data
 @Builder
 public class NewsRequestDto {

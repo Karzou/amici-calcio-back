@@ -8,5 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CityRepository extends JpaRepository<City, Integer> {
 
+    /**
+     * Find by code postal city.
+     *
+     * @param codePostal the code postal
+     * @return the city
+     */
     City findByCodePostal(int codePostal);
 }

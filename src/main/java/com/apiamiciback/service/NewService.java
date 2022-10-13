@@ -27,21 +27,44 @@ public class NewService {
     NewRepository newRepository;
 
 
+    /**
+     * Get all news list.
+     *
+     * @return the list
+     */
     public List<News> getAllNews(){
 
         log.info("Get All News in database");
         return newRepository.findAllByCreatedDesc();
     }
 
+    /**
+     * Get last new news.
+     *
+     * @return the news
+     */
     public News getLastNew(){
         return newRepository.findAllByCreatedDesc().get(0);
     }
 
+    /**
+     * Get new news.
+     *
+     * @param id the id
+     * @return the news
+     */
     public News getNew(int id){
         log.info("Get news : {}", id);
         return newRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("New not found in DataBase : " + id));
     }
+
+    /**
+     * Save news news.
+     *
+     * @param newsRequestDto the news request dto
+     * @return the news
+     */
     public News saveNews(NewsRequestDto newsRequestDto){
         log.info("Saving news {} in database", newsRequestDto.getTitle());
 
@@ -55,6 +78,13 @@ public class NewService {
         return newRepository.save(news);
     }
 
+    /**
+     * Update news news.
+     *
+     * @param newsRequest the news request
+     * @param id          the id
+     * @return the news
+     */
     public News updateNews(News newsRequest, int id){
         log.info("Call update news service for : {}", newsRequest.getTitle() + " ");
         News news = newRepository.findById(id)
@@ -68,6 +98,11 @@ public class NewService {
         return newRepository.save(news);
     }
 
+    /**
+     * Delete news.
+     *
+     * @param id the id
+     */
     public void deleteNews(int id){
         log.info("Service delete news id : {}", id);
 

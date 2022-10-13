@@ -24,10 +24,21 @@ public class CityService {
     CityRepository cityRepository;
 
 
+    /**
+     * Get all cities list.
+     *
+     * @return the list
+     */
     public List<City> getAllCities(){
         return cityRepository.findAll();
     }
 
+    /**
+     * Gets city by code postal.
+     *
+     * @param codePostal the code postal
+     * @return the city by code postal
+     */
     public City getCityByCodePostal(int codePostal) {
         return cityRepository.findByCodePostal(codePostal);
     }

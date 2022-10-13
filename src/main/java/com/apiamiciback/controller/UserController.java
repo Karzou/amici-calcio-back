@@ -54,8 +54,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * The Storage service.
+     */
     @Autowired
     FileStorageService storageService;
+
     /**
      * Refresh token.
      *
@@ -141,12 +145,25 @@ public class UserController {
         return ResponseEntity.ok().body(users) ;
     }
 
+    /**
+     * Gets user.
+     *
+     * @param id the id
+     * @return the user
+     */
     @GetMapping("/getUser/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") int id){
         log.info("GetUser : " + id);
         return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
+    /**
+     * Update user response entity.
+     *
+     * @param id   the id
+     * @param user the user
+     * @return the response entity
+     */
     @PutMapping(value = "update/{id}", consumes = {"application/json"})
     public ResponseEntity<?> updateUser(@PathVariable("id") int id ,@RequestBody @Valid UserRequestDto user){
         log.info("update user : " + user.toString());
@@ -155,6 +172,13 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.updateUser(id, user));
     }
 
+    /**
+     * Save img user response entity.
+     *
+     * @param idUser the id user
+     * @param file   the file
+     * @return the response entity
+     */
     @PostMapping(value = "/saveImg", consumes = {"multipart/form-data"})
     public ResponseEntity<?>saveImgUser(@RequestParam("id") int idUser, @RequestParam("file") MultipartFile file){
 
@@ -178,6 +202,12 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.savImgUser(idUser, url));
     }
 
+    /**
+     * Delete bool user response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity<?>deleteBoolUser (@PathVariable int id){
 

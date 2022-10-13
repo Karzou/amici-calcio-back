@@ -36,6 +36,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * The Position service.
+     */
     @Autowired
     PositionService positionService;
 
@@ -46,6 +49,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     RoleRepository roleRepository;
 
+    /**
+     * The Position repository.
+     */
     @Autowired
     PositionRepository positionRepository;
 
@@ -55,9 +61,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    /**
+     * The City service.
+     */
     @Autowired
     CityService cityService;
 
+    /**
+     * The New repository.
+     */
     @Autowired
     NewRepository newRepository;
 
@@ -157,6 +169,7 @@ public class UserService implements UserDetailsService {
             return null;
         }
     }
+
     /**
      * Save role role.
      *
@@ -183,6 +196,13 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
+
+    /**
+     * Gets user by id.
+     *
+     * @param id the id
+     * @return the user by id
+     */
     public User getUserById (int id) {
 
         log.info("Searching username {} in database ", id);
@@ -193,6 +213,7 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
+
     /**
      * Gets all users.
      *
@@ -205,6 +226,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    /**
+     * Update user user.
+     *
+     * @param id             the id
+     * @param userRequestDto the user request dto
+     * @return the user
+     */
     public User updateUser (int id, UserRequestDto userRequestDto){
 
         User user = userRepository.findById(id)
@@ -250,6 +278,13 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    /**
+     * Sav img user user.
+     *
+     * @param id  the id
+     * @param url the url
+     * @return the user
+     */
     public User savImgUser(int id, String url){
         User user = userRepository.findById(id).orElseThrow();
         user.setImgUrl(url);
@@ -257,6 +292,11 @@ public class UserService implements UserDetailsService {
 
     }
 
+    /**
+     * Delete user.
+     *
+     * @param id the id
+     */
     public void deleteUser(int id){
 
         log.info("Service delete user");

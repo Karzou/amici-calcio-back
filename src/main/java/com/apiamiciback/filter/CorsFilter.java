@@ -8,13 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Cors filter.
+ */
 @Component
 @Slf4j
 public class CorsFilter implements Filter {
 
 
-
-        public CorsFilter () {
+    /**
+     * Instantiates a new Cors filter.
+     */
+    public CorsFilter () {
             log.info("DemoCORSFilter init");
         }
 

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The type Home controller.
+ */
 @RestController
 @RequestMapping("/home")
 @Slf4j
@@ -20,6 +23,11 @@ public class HomeController {
     private NewService newService;
 
 
+    /**
+     * Gets home.
+     *
+     * @return the home
+     */
     @GetMapping
     public ResponseEntity<?> getHome() {
 

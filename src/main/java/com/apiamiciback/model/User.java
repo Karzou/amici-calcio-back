@@ -88,14 +88,30 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<TeamUser> teamUsersByIdUser = new ArrayList<>();
+
+    /**
+     * Set position.
+     *
+     * @param position the position
+     */
     public void setPosition(Position position){
         this.position = position;
     }
 
+    /**
+     * Adresse to string string.
+     *
+     * @return the string
+     */
     public String adresseToString(){
         return getStreet() + " " + getNumber() + " " + getCity().getCodePostal() + " " + getCity().getCity();
     }
 
+    /**
+     * Position to string string.
+     *
+     * @return the string
+     */
     public String positionToString(){
         return getPosition().getPosition();
     }

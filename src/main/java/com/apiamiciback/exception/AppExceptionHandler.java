@@ -10,11 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type App exception handler.
+ */
 @Slf4j
 @RestControllerAdvice
 public class AppExceptionHandler {
 
 
+    /**
+     * Handle invalid argument map.
+     *
+     * @param ex the ex
+     * @return the map
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex) {
@@ -27,6 +36,12 @@ public class AppExceptionHandler {
         return errorMap;
     }
 
+    /**
+     * Handle business exception map.
+     *
+     * @param ex the ex
+     * @return the map
+     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(NotFoundException.class)
     public Map<String, String> handleBusinessException(NotFoundException ex) {

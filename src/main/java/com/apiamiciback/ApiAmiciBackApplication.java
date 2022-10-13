@@ -36,6 +36,9 @@ public class ApiAmiciBackApplication implements CommandLineRunner {
         SpringApplication.run(ApiAmiciBackApplication.class, args);
     }
 
+    /**
+     * The Storage service.
+     */
     @Resource
     FileStorageService storageService;
 
@@ -57,6 +60,11 @@ public class ApiAmiciBackApplication implements CommandLineRunner {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Simple cors filter filter registration bean.
+     *
+     * @return the filter registration bean
+     */
     @Bean
     public FilterRegistrationBean simpleCorsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

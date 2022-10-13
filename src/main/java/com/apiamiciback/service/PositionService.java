@@ -28,6 +28,12 @@ public class PositionService {
         return position;
     }*/
 
+    /**
+     * Gets position by if.
+     *
+     * @param id the id
+     * @return the position by if
+     */
     public Position getPositionByIf(int id) {
         Position position = positionRepository.findById(2).orElseThrow();
 
