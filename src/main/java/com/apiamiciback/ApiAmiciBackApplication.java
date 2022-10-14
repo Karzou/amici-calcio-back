@@ -1,8 +1,11 @@
 package com.apiamiciback;
 
 import com.apiamiciback.service.FileStorageService;
+import com.apiamiciback.util.GeneratePassword;
+import com.apiamiciback.util.MailSenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +20,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import javax.annotation.Resource;
 import java.util.Collections;
+import java.util.Date;
 
 
 /**
@@ -27,6 +31,9 @@ import java.util.Collections;
 @Slf4j
 public class ApiAmiciBackApplication implements CommandLineRunner {
 
+
+    @Autowired
+    MailSenderService mailSenderService;
     /**
      * The entry point of application.
      *
@@ -42,11 +49,14 @@ public class ApiAmiciBackApplication implements CommandLineRunner {
     @Resource
     FileStorageService storageService;
 
+
     @Override
     public void run(String... args) throws Exception {
         //storageService.deleteAll();
         //storageService.init();
         log.info("API READY !!!!!!");
+        // to send mail for prod
+       // mailSenderService.sendEmail("kvanconingsloo@gmail.com", "Api ready !!", "Api run Sucessfully ");
 
     }
 
@@ -79,5 +89,11 @@ public class ApiAmiciBackApplication implements CommandLineRunner {
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
+
+    @Bean
+    GeneratePassword generatePassword(){
+        return new GeneratePassword();
+    }
+
 
 }

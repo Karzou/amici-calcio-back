@@ -124,7 +124,7 @@ public class UserController {
         if (userService.getUser(user.getEmail()) != null){
             log.error("User {} already exist.", user.getEmail());
 
-            return ResponseEntity.badRequest().body("User already exist");
+            return ResponseEntity.badRequest().body("Ce mail existe déjà.");
         } else {
             log.info("User {} saved successfully.", user.getEmail());
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/saveuser").toUriString());

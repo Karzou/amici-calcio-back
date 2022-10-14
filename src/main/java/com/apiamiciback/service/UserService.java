@@ -7,6 +7,8 @@ import com.apiamiciback.repository.NewRepository;
 import com.apiamiciback.repository.PositionRepository;
 import com.apiamiciback.repository.RoleRepository;
 import com.apiamiciback.repository.UserRepository;
+import com.apiamiciback.util.GeneratePassword;
+import com.apiamiciback.util.MailSenderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +23,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static com.apiamiciback.util.GeneratePassword.generatePassword;
+
 
 /**
  * The type User service.
@@ -29,6 +33,9 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class UserService implements UserDetailsService {
+
+    @Autowired
+    GeneratePassword generatePassword;
 
     /**
      * The User repository.
@@ -73,6 +80,10 @@ public class UserService implements UserDetailsService {
     @Autowired
     NewRepository newRepository;
 
+    @Autowired
+    MailSenderService mailSenderService;
+
+
     /**
      * Save role to user.
      *
@@ -115,12 +126,16 @@ public class UserService implements UserDetailsService {
      */
     public User saveUser (UserRequestDto user) {
 
+
         log.info("Saving new user {} in database ", user.getFirstName());
         if(userRepository.findByEmail(user.getEmail()) == null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             User userDB = new User();
-            userDB.setPassword(user.getPassword());
+            //userDB.setPassword(user.getPassword());    for Tests and Dev
+            String newPasword = generatePassword(8);
+
+            userDB.setPassword(passwordEncoder.encode(newPasword)); // For prod
             userDB.setLastName(user.getLastName());
             userDB.setEmail(user.getEmail());
             userDB.setFirstName(user.getFirstName());
@@ -163,6 +178,9 @@ public class UserService implements UserDetailsService {
                 userDB.setCity(city);
             }
             log.info("User {} saved in database.", userDB.getEmail());
+
+            mailSenderService.sendEmail("kvanconingsloo@gmail.com", "Votre mot de passe", "Votre mot de passe pour le site d'amici caclio est " + newPasword);
+
             return userRepository.save(userDB);
         }else {
             log.error("User {} already exist in database.", user.getEmail());
