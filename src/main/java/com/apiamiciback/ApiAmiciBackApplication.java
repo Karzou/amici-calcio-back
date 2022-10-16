@@ -1,6 +1,9 @@
 package com.apiamiciback;
 
+import com.apiamiciback.model.User;
+import com.apiamiciback.repository.UserRepository;
 import com.apiamiciback.service.FileStorageService;
+import com.apiamiciback.service.UserService;
 import com.apiamiciback.util.GeneratePassword;
 import com.apiamiciback.util.MailSenderService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,8 @@ import java.util.Date;
 @Slf4j
 public class ApiAmiciBackApplication implements CommandLineRunner {
 
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     MailSenderService mailSenderService;
@@ -54,6 +59,15 @@ public class ApiAmiciBackApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //storageService.deleteAll();
         //storageService.init();
+        //first init
+        /*
+        User user = new User();
+        user.setEmail("admin@admin.com");
+        user.setPassword(passwordEncoder().encode("admin"));
+        user.setFirstName("Admin");
+        user.setLastName("Admin");
+        userRepository.save(user);
+        */
         log.info("API READY !!!!!!");
         // to send mail for prod
        // mailSenderService.sendEmail("kvanconingsloo@gmail.com", "Api ready !!", "Api run Sucessfully ");
